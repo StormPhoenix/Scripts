@@ -3,7 +3,7 @@ cd ~
 mkdir tmp_halo_build
 cd ./tmp_halo_build
 
-git clone https://github.com/halo-dev/halo.git
+git clone git@github.com:halo-dev/halo.git
 cd ./halo
 git checkout -b release-1.6 origin/release-1.6
 ./gradlew clean build -x check
