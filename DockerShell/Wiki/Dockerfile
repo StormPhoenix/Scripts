@@ -6,13 +6,13 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get install -y vim \
-    && apt-get install -y openjdk-11-jre \
     && apt-get install -y git \
     && apt-get install -y zip \
     && apt-get install -y wget \
-    && apt-get install -y apache2 mysql-server php php-mysql libapache2-mod-php php-xml php-mbstring \
-    && apt-get install -y systemctl \
-    && apt-get install -y php-intl
+    && apt-get install -y apache2 mysql-server \
+    && apt-get install -y php php-apcu php-common php-intl php-json php-mysql \
+    && apt-get install -y libapache2-mod-php php-xml php-mbstring \
+    && apt-get install -y systemctl
 
 COPY start_apache2_service.sh /root/start_apache2_service.sh
 RUN chmod +x /root/start_apache2_service.sh
