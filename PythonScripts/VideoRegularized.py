@@ -1,6 +1,7 @@
 import argparse
 import os
 import re
+from enum import Enum
 
 subtitle_postfix = {'.ass'}
 sorted_postfix = []
@@ -8,6 +9,20 @@ sorted_postfix = []
 video_postfix = ['.mkv', '.mp4']
 
 re_pattern = r'\[\d+\]'
+
+class RePattern(Enum):
+    SxxExx = 'SxxExx'
+    SquareBracket = '[xx]'
+    EPxx = 'EPxx'
+
+    def __str__(self):
+        return self.value
+
+reg_map = {
+    RePattern.SxxExx: r'E\d+\.',
+    RePattern.SquareBracket: r'\[\d+\]',
+    RePattern.EPxx: r'EP\d+\.',
+};
 
 def find_subtitle(filename):
     for postfix in sorted_postfix:
@@ -59,6 +74,7 @@ def parse_videos(dir):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process some inputs.')
     parser.add_argument('--dir', required=True)
+    parser.add_argument('--reg_pattern', type=RePattern, choices=list(RePattern), required=False)
     parser.add_argument('--pattern', required=False)
     parser.add_argument('--subtitle', required=False, nargs='+')
     args = parser.parse_args()
@@ -70,9 +86,11 @@ if __name__ == '__main__':
     sorted_postfix = sorted(list(subtitle_postfix), key=lambda postfix:len(postfix), reverse=True)
     # print(sorted_postfix)
 
+    if args.reg_pattern is not None:
+        re_pattern = reg_map[args.reg_pattern]
+
     if args.pattern is not None:
         re_pattern = args.pattern
 
-    print(re_pattern)
-
+    print('Use regex pattern: ' + re_pattern)
     parse_videos(args.dir)
